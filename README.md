@@ -6,6 +6,7 @@ A full-stack tuition management platform built with React, Node.js, Express, and
 
 ```
 Tution Project/
+├── docs/             # Deployment and setup guides
 ├── frontend/          # React + Vite + TailwindCSS
 │   ├── src/
 │   │   ├── api/              # API integration
