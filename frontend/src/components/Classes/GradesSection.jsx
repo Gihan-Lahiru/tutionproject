@@ -193,8 +193,13 @@ const GradesSection = () => {
       if (rect.bottom < 0 || rect.top > viewportH) return;
 
       const isMobile = window.innerWidth < 768;
-      const speed = isMobile ? 0.2 : 0.35;
-      const offset = -rect.top * speed;
+      const speed = isMobile ? 0.3 : 0.5;
+      
+      // Calculate offset based on how much of the section is visible
+      // When section enters viewport (rect.top = viewportH), start parallax
+      // As we scroll down, rect.top decreases, creating the parallax effect
+      const progress = (viewportH - rect.top) / (viewportH + rect.height);
+      const offset = (progress - 0.5) * 100 * speed;
 
       parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0)`;
     };
@@ -204,7 +209,9 @@ const GradesSection = () => {
       rafId = window.requestAnimationFrame(updateParallax);
     };
 
-    requestTick();
+    // Initial call
+    updateParallax();
+    
     window.addEventListener('scroll', requestTick, { passive: true });
     window.addEventListener('resize', requestTick);
 
