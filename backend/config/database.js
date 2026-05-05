@@ -239,6 +239,14 @@ const ensureStandardClasses = async () => {
     await ensureColumnAsync('videos', 'thumbnail_url', 'TEXT')
     await ensureColumnAsync('videos', 'thumbnail_public_id', 'TEXT')
 
+    // Add receipt columns for manual payment processing
+    await ensureColumnAsync('payments', 'receipt_url', 'TEXT')
+    await ensureColumnAsync('payments', 'receipt_public_id', 'TEXT')
+    await ensureColumnAsync('payments', 'receipt_uploaded_at', 'DATETIME')
+    await ensureColumnAsync('payments', 'approved_by', 'TEXT')
+    await ensureColumnAsync('payments', 'approval_status', "TEXT DEFAULT 'pending'")
+    await ensureColumnAsync('payments', 'approval_notes', 'TEXT')
+
   } catch (e) {
     console.error('❌ DB init error:', e)
   }
