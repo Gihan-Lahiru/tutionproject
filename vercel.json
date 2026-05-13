@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "env": [
+    "NODE_ENV",
+    "JWT_SECRET",
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
+    "ENABLE_DEVICE_TRACKING"
+  ],
+  "buildCommand": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30,
+      "memory": 512
+    }
+  }
+}

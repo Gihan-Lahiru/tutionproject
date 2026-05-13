@@ -2,16 +2,22 @@ const sqlite3 = require('sqlite3').verbose()
 const path = require('path')
 
 const dbPath = path.join(__dirname, '..', 'tuition_sir.db')
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('❌ Database connection error:', err)
-  } else {
-    console.log('✅ Database connected (SQLite)')
-  }
-})
 
-// Enable foreign keys
-db.run('PRAGMA foreign_keys = ON')
+// Cache DB on global to avoid reconnecting on warm invocations (serverless-friendly)
+if (!global.__tuition_db) {
+  global.__tuition_db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      console.error('❌ Database connection error:', err)
+    } else {
+      console.log('✅ Database connected (SQLite) - cached')
+    }
+  })
+
+  // Enable foreign keys
+  global.__tuition_db.run('PRAGMA foreign_keys = ON')
+}
+
+const db = global.__tuition_db
 
 const runAsync = (sql, params = []) =>
   new Promise((resolve, reject) => {
