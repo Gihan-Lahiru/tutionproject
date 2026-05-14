@@ -91,5 +91,7 @@ app.use((req, res) => {
 })
 
 // Server startup removed for serverless deployment (Vercel)
-
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`)
+})
 module.exports = app
